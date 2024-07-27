@@ -11,5 +11,9 @@ class WeatherView(APIView):
     def get(self, request, *args, **kwargs):
         city = kwargs.get(city)
         url = f"{BASE_URL}?q={city}&appid={weather_apikey}&units=metric"
-        weather = requests.get(url)
-                
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Request failed"}, status=status.HTTP_404_NOT_FOUND)
