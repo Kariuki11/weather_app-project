@@ -7,6 +7,11 @@ from django.conf import settings
 weather_apikey = settings.WEATHER_API_KEY
 BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
 
+def endpoints(request):
+    return Response({'endpoints': [
+        '/api/weather/<str:city>/'
+        ]})
+
 class WeatherView(APIView):
     def get(self, request, *args, **kwargs):
         city = kwargs.get(city)
