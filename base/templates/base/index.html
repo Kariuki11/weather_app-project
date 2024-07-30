@@ -1,7 +1,37 @@
  {% extends "main.html" %}
  {% load static %}
  {% block content %}
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+
+<main>
+  <h1>Welcome to our Simplified Weather app.</h1>
+  <p>This app will provide you with the current weather and forecast for any location you choose.</p>
+  <form method="post" id="weather_form">
+    {% csrf_token %}
+    <input type="text" name="city" id="id_city" placeholder="Enter Your Preffered City/Town." required>
+    <button type="submit">Check Weather</button>
+  </form>
+</main>
+
+<script>
+  function getWeather() {
+    var city = document.getElementById("id_city").value;
+    var weather_form = document.getElementById('weather_form')
+    
+    weather_form.onsubmit((e)=>{
+      e.preventDefault()
+      fetch(`/api/weather/${city}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+
+        }
+      }
+    }).then(response=>{
+      if(response.ok){
+        return response.json()
+      }
+    })
+  }
+</script>
+
   {% endblock content %}
